@@ -277,3 +277,7 @@ MonoBehaviour:
   buster: 18.2
   busterTime: 1
   speed: -10
+  isCutted: 0
+  fogColor: {r: 1, g: 0.30588236, b: 0.30588236, a: 1}
+  LineColor: {r: 0.7490196, g: 0, b: 0, a: 0}
+  linecolor: {fileID: 2100000, guid: 40537bc159a0d3b42b3e04602358ca67, type: 2}

@@ -115,6 +115,11 @@ public class RedNodeSpawner : MonoBehaviour
             if (nodeIdx >= nodeInfos.Count) break;
         }
 
+        // 클리어 화면이 나온다
+
+        yield return new WaitForSeconds(6f);
+
+        GameManager.instance.AppearResult();
 
     }
 }

@@ -7,20 +7,35 @@ public class LaserCut : MonoBehaviour
 {
     public LayerMask layer;
     public float moveDistance = 25f; // 조각이 이동할 거리
-    public float destroyDelay = 3f; // 몇 초 후에 사라질지 설정
+    public float destroyDelay = 2f; // 몇 초 후에 사라질지 설정
+
+    public GameObject effectObject;
+    
 
     Vector3 oldPos;
+
+
+    public Color fogColor;
+    public Color LineColor;
+
+    public Material linecolor;
 
     void Update()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.up, out hit, 3, layer))
+        if (Physics.Raycast(transform.position, transform.up, out hit, 2.5f, layer))
         {
             if (Vector3.Angle(transform.position - oldPos, hit.transform.up) > 100)
             {
+                RenderSettings.fogColor = fogColor;
+                linecolor.SetColor("_EmissionColor", LineColor);
+
+                GameManager.instance.HitSuccess();
+                hit.transform.GetComponentInParent<NodeMove>().isCutted = true;
+                Instantiate(effectObject, hit.transform.position, Quaternion.identity);
                 // 부모와 자식 오브젝트 모두 절단
-                SliceObjectAndChildren(hit.transform.gameObject, transform.position, transform.forward);
+                SliceObjectAndChildren(hit.transform.gameObject, transform.position, transform.right);
             }
         }
         oldPos = transform.position;
@@ -67,8 +82,11 @@ public class LaserCut : MonoBehaviour
             AddHullComponents(lowerHull,Vector3.right);
             AddHullComponents(upperHull, Vector3.left);
 
+
+            StartCoroutine(DestroyAfterDelay(lowerHull, destroyDelay));
+            StartCoroutine(DestroyAfterDelay(upperHull, destroyDelay));
             // 조각 이동
-            MovePieces(lowerHull, upperHull);
+            //MovePieces(lowerHull, upperHull);
 
             // 원래 오브젝트 삭제
             Destroy(obj);
@@ -83,8 +101,7 @@ public class LaserCut : MonoBehaviour
         Vector3 rightDirection = direction; // 오른쪽 방향
 
         // Coroutine을 통해 조각 삭제
-        StartCoroutine(DestroyAfterDelay(lowerHull, destroyDelay));
-        StartCoroutine(DestroyAfterDelay(upperHull, destroyDelay));
+        
     }
 
     IEnumerator DestroyAfterDelay(GameObject piece, float delay)
@@ -99,6 +116,6 @@ public class LaserCut : MonoBehaviour
         collider.convex = true;
         hull.AddComponent<Rigidbody>();
         Rigidbody rg = hull.GetComponent<Rigidbody>();
-        rg.AddForce(direction*5f,ForceMode.VelocityChange);
+        rg.AddForce(direction*40f,ForceMode.VelocityChange);
     }
 }

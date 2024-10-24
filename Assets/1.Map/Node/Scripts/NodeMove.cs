@@ -10,6 +10,9 @@ public class NodeMove : MonoBehaviour
 
     public float speed = -2f;
 
+    public bool isCutted = false;
+
+    
     IEnumerator Start()
     {
         Invoke("SelfDestroy", 3.1f);
@@ -25,6 +28,21 @@ public class NodeMove : MonoBehaviour
     }
 
     public void SelfDestroy()
+    {
+        if(isCutted == false)
+        {
+            GameManager.instance.HitFaild();
+            Destroy(gameObject);
+        }
+        else
+        {
+            
+            Invoke("SelfDestroy2", 2.5f);
+        }
+        
+    }
+
+    public void SelfDestroy2()
     {
         Destroy(gameObject);
     }

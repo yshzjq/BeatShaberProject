@@ -100,7 +100,7 @@ public class BlueNodeSpawner : MonoBehaviour
             // 음악에 맞게 노드 생성
             if (spawnTime[nodeIdx] <= currentTime)
             {
-                Debug.Log(spawnTime[nodeIdx] + "    " + currentTime);
+                //Debug.Log(spawnTime[nodeIdx] + "    " + currentTime);
 
                 if (directionTypeNum[nodeIdx] == 8)
                 {
